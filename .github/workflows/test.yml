@@ -15,7 +15,7 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Output environment variables
-        run: echo "%DATABASE_NAME%"
+        run: echo "$DATABASE_NAME"
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
