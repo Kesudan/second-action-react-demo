@@ -3,12 +3,19 @@ on:
   push:
     branches:
       - main
+env:
+  DATABASE_NAME: ${{ secrets.DATABASE_NAME }}      
 jobs:
   test:
+    environment: testing
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     runs-on: ubuntu-latest
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: Output environment variables
+        run: echo %DATABASE_NAME%
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
