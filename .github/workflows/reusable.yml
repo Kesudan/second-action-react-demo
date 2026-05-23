@@ -11,8 +11,14 @@ on:
         type: string
         description: The name of the built script files
         required: false
+    outputs:
+      results:
+        description: The result of the deployment operation
+        value: ${{ jobs.deploy.outputs.outcome }}
 jobs:
   deploy:
+    outputs:
+      outcome: ${{ steps.set-result.outputs.step-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Get build artifacts
@@ -25,3 +31,7 @@ jobs:
         run: echo "${{ inputs.script-name }}"
       - name: Deploy
         run: echo "Deploying..."
+      - name: Set result outputs
+        id: set-results
+        run: echo "step-result=success" >> $GITHUB_OUTPUT
+        
