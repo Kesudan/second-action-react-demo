@@ -14,14 +14,14 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      - name: Output environment variables
-        run: echo "$DATABASE_NAME"
       - name: Cache dependencies
+        id: cache
         uses: actions/cache@v3
         with:
           path: ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Lint code
         run: npm run lint
@@ -36,11 +36,13 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Cache dependencies
+        id: cache
         uses: actions/cache@v3
         with:
           path: ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build website
         run: npm run build
